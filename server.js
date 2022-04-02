@@ -10,9 +10,10 @@ const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const MongodbSession = require('connect-mongodb-session')(session);
 const User = require("./models/user");
+require('dotenv').config();
 
-const JWT_SECRETE = "sdfd$%*#%**#%(#kjfwedfndkjfnifhweo;fjfsdjbdufjaefadfduahfdoaifj;dohfeqnjn244pnvnov";
 
+const JWT_SECRETE = process.env.JWT_SECRETE;
 
 const app = express();
 
@@ -48,8 +49,7 @@ const store = new MongodbSession({
 
 app.use(
   session({
-    secret:
-      "sdfd$%*#%**#%(#kjfwedfndkjfnifhweo;fjfsdjbdufjaefadfduahfdoaifj;dohfeqnjn244pnvnov",
+    secret: process.env.secret,
     resave: false,
     saveUninitialized: false,
     store:store
