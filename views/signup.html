@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <center>
+        <div>
+            <p>SignUp</p>
+            <label for="username">Username</label>
+            <input id="username" type="text" name="username"><br>
+            <label for="password">Password</label>
+            <input id="password" type="password" name="password">
+            <br>
+            <button onclick="register()">SignUp</button>
+        </div>
+       
+    </center>
+{% endblock %}
+
+{% block script %}
+    <script>
+        // function to register a new user
+        function register() {
+            const result = fetch("/register",{
+                method:"POST",
+                headers:{
+                    "content-type":"application/json"
+                },
+                body: JSON.stringify({
+                    "username": document.getElementById("username").value,
+                    "password": document.getElementById("password").value
+                })
+            })
+
+            result.then(res => 
+            res.json()).then(d => {
+                if(d.status == "success"){
+                    alert(d.msg);
+                    window.location.href = d.url;
+                }
+                else{
+                    alert(d.msg);
+                }
+             })
+        }
+    </script>
+{% endblock %}

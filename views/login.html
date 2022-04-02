@@ -1,0 +1,45 @@
+{% extends "base.html"%}
+
+{% block content %}
+    <center>
+     <div>
+            <p>login</p>
+             <label for="username">Username</label>
+            <input id="lusername" type="text" name="username"><br>
+            <label for="password">Password</label>
+            <input id="lpassword" type="password" name="password">
+            <br>
+            <button onclick="login()">Login</button>
+        </div>
+    </center>
+{% endblock %}
+
+{% block script %}
+    <script>
+         // function to login a user
+
+        function login() {
+            const result = fetch("/login",{
+                method:"POST",
+                headers:{
+                    "content-type":"application/json"
+                },
+                body: JSON.stringify({
+                    "username": document.getElementById("lusername").value,
+                    "password": document.getElementById("lpassword").value
+                })
+            })
+
+            result.then(res =>
+            res.json()).then(d => {
+                if(d.status == "success"){
+                    alert(d.msg);
+                    window.location.href = d.url;
+                }
+                else{
+                    alert(d.msg);
+                }
+            })
+        }
+    </script>
+{% endblock %}

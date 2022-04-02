@@ -1,0 +1,35 @@
+{% extends "base.html" %} {% block content %}
+  <div id="profile">
+    <div id="profile-left">
+      <h2>Profile</h2>
+      <div id="user_info">
+        <p>name:</p>
+        <p>email:</p>  
+      </div>
+      <div id="new_project">
+        <h6>Upload new project</h6>
+        <label for="project">Project Name </label>
+        <input id="projectName" type="text" name="project" />
+        <br />
+        <label for="description">description</label>
+        <textarea id="des" name="description" id="" cols="25" rows="2" placeholder="Write about ur project"></textarea><br>
+        <label for="">Upload zip file </label>
+        <input id="projectFile" type="file" />
+        <br />
+        <button onclick="Add_project()">add</button>
+      </div>
+      <div>
+        <a href="/logout">Logout</a>
+      </div>
+    </div>
+    <div id="profile-right">
+        <h2>project list</h2>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script>
+   
+  </script>
+{% endblock %}
