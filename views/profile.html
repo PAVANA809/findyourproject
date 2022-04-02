@@ -13,8 +13,8 @@
         <br />
         <label for="description">description</label>
         <textarea id="des" name="description" id="" cols="25" rows="2" placeholder="Write about ur project"></textarea><br>
-        <label for="">Upload zip file </label>
-        <input id="projectFile" type="file" />
+        <label for="">project link</label>
+        <input id="link" type="text" />
         <br />
         <button onclick="Add_project()">add</button>
       </div>
@@ -30,6 +30,29 @@
 
 {% block script %}
   <script>
-   
+        function Add_project(){
+          const result = fetch('/addproject',{
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              name: document.getElementById('projectName').value,
+              description: document.getElementById('des').value,
+              link: document.getElementById('link').value
+            })
+          })
+
+          result.then(res => res.json())
+          .then(d => {
+            if(d.status === "success"){
+              alert(d.msg);
+            }else{
+              alert(d.msg);
+            }
+          })
+
+
+        }
   </script>
 {% endblock %}

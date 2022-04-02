@@ -6,6 +6,8 @@
             <p>SignUp</p>
             <label for="username">Username</label>
             <input id="username" type="text" name="username"><br>
+            <label for="mail">Email</label>
+            <input id="mail" type="email" name="email" placeholder="xyz@gmail.com"><br>
             <label for="password">Password</label>
             <input id="password" type="password" name="password">
             <br>
@@ -26,7 +28,8 @@
                 },
                 body: JSON.stringify({
                     "username": document.getElementById("username").value,
-                    "password": document.getElementById("password").value
+                    "password": document.getElementById("password").value,
+                    "email": document.getElementById("mail").value
                 })
             })
 

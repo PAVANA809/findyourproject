@@ -6,10 +6,14 @@ const nunjucks = require('nunjucks');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
-
+const emailvalidator = require('email-validator');
 const session = require('express-session');
 const MongodbSession = require('connect-mongodb-session')(session);
+
+
 const User = require("./models/user");
+const Projects = require("./models/projects");
+
 require('dotenv').config();
 
 
@@ -96,24 +100,28 @@ app.get("/register", (req, res) => {
 
 
 app.post("/register", async (req, res) => {
-    const { username, password: pw } = req.body;
-
+    const { username,email, password: pw } = req.body;
+  if (!emailvalidator.validate(email)) {
+    return res.send({status:'error', msg: 'Invalid email'});
+  }
     if (typeof username !== 'string' || typeof pw !== 'string') {
-        res.send("invalid username or password");
+        return res.send("invalid username or password");
      }
     const password = await bcrypt.hash(pw, 10);
     try {
         const response = await User.create({
-            username,
-            password
+          username,
+          email,
+          password
         });
-        res.send({ status: "success", msg: "Account created successfully","url": "/login" });
+        return res.send({ status: "success", msg: "Account created successfully","url": "/login" });
         
     } catch (err) {
+      console.log(err);
         if (err.code === 11000) {
-            res.send({ status: "error", msg: "Username already taken" });
+            return res.send({ status: "error", msg: "Username already taken" });
         } else {
-            res.send({ status: "error", msg: "Error saving account details" });
+            return res.send({ status: "error", msg: "Error saving account details" });
         }
     }
 })
@@ -143,6 +151,26 @@ app.get('/logout', (req, res) => {
       res.redirect('/login');
     }
   });
+})
+
+app.post("/addproject", async (req, res) => {
+  if (req.session.isAuth) {
+    const { name, description, link } = req.body;
+    var username = req.session.userid;
+    try {
+      const project = await Projects.create({
+      username,
+      name,
+      description,
+      link
+      });
+      return res.send({ status: "success", msg: "Project added successfully" });
+    } catch (err) {
+      return res.send({ status: "error", msg: "Error saving project details" });
+    }
+  } else {
+    return res.redirect("/login");
+  }
 })
 
 
