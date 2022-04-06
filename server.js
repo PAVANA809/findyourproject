@@ -31,7 +31,7 @@ nunjucks.configure("views", { autoescape: true, express: app });
 
 const { type } = require('os');
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 3000;
 const localURL = "mongodb://localhost:27017/findyourproject";
 
 mongoose.connect(localURL, {
@@ -74,10 +74,14 @@ app.get("/", (req, res) => {
 })
 
 
-app.get("/profile",isAuth, (req, res) => {
-
-    console.log(req.session.userid) 
-    res.render("profile.html");
+app.get("/profile", isAuth, async (req, res) => {
+    const user = await User.findOne({ username: req.session.userid });
+  const projects = await Projects.find({ username: req.session.userid });
+  res.render("profile.html", data = {
+    "name": req.session.userid,
+    "email": user.email,
+    "projects": projects,
+  });
 })
 
 app.get("/login", (req, res) => {
@@ -173,6 +177,16 @@ app.post("/addproject", async (req, res) => {
   }
 })
 
+
+app.get("/project/:id", async (req, res) => {
+  if (req.session.isAuth) {
+    project = await Projects.findById(req.params.id);
+    console.log(project);
+    res.send("project");
+  } else {
+    res.redirect("/login");
+  }
+})
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

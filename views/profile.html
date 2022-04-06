@@ -3,8 +3,8 @@
     <div id="profile-left">
       <h2>Profile</h2>
       <div id="user_info">
-        <p>name:</p>
-        <p>email:</p>  
+        <p>name: {{name}}</p>
+        <p>email: {{email}}</p>  
       </div>
       <div id="new_project">
         <h6>Upload new project</h6>
@@ -24,6 +24,18 @@
     </div>
     <div id="profile-right">
         <h2>project list</h2>
+        <div>
+          <ul id="project_list">
+            {% for project in projects %}
+              <li>
+                <div>
+                  <a href="/project/{{project.id}}">{{project.name}}</a>
+                  <p>{{project.description}}</p>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
     </div>
   </div>
 {% endblock %}
