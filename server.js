@@ -181,8 +181,7 @@ app.post("/addproject", async (req, res) => {
 app.get("/project/:id", async (req, res) => {
   if (req.session.isAuth) {
     project = await Projects.findById(req.params.id);
-    console.log(project);
-    res.send("project");
+    res.render("project.html", {project: project});
   } else {
     res.redirect("/login");
   }
